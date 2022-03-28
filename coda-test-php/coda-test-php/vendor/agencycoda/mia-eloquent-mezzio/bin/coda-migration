@@ -1,0 +1,35 @@
+#!/usr/bin/env php
+<?php 
+
+declare(strict_types=1);
+
+namespace Mia\Database;
+
+// Setup/verify autoloading
+if (file_exists($a = __DIR__ . '/../../../autoload.php')) {
+    require $a;
+} elseif (file_exists($a = __DIR__ . '/../vendor/autoload.php')) {
+    require $a;
+} elseif (file_exists($a = __DIR__ . '/../autoload.php')) {
+    require $a;
+} else {
+    fwrite(STDERR, 'Cannot locate autoloader; please run "composer install"' . PHP_EOL);
+    exit(1);
+}
+
+$command = $argc > 1 ? $argv[1] : '';
+if($command == 'migrate'){
+    $cmd = new \Mia\Database\Command\MigrateCommand();
+    $cmd->run();
+}else if ($command == 'make') {
+    $cmd = new \Mia\Database\Command\MakeCommand($argv[2]);
+    $cmd->run();
+}else if ($command == 'make:seeder') {
+    $cmd = new \Mia\Database\Command\MakeSeederCommand($argv[2]);
+    $cmd->run();
+}else if($command == 'db:seed'){
+    $cmd = new \Mia\Database\Command\SeedCommand();
+    $cmd->run();
+}
+
+exit(0);

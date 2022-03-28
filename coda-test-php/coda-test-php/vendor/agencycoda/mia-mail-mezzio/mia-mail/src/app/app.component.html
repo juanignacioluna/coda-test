@@ -1,0 +1,74 @@
+<app-header (updateUrl)="refreshTemplates($event)"></app-header>
+
+<div class="container">
+  <app-template-selector #templateSelector (selectedTemplate)="selectedTemplate($event)"></app-template-selector>
+  
+  <div *ngIf="template" class="intro-component-animation" fxLayout="row" fxLayout.lt-md="column" fxLayoutGap="32px">
+    <div fxFlex="500px" fxFlex.xs="100%" class="config box">
+      <h2>Info del template</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Titulo</mat-label>
+        <input matInput placeholder="Base URL" [(ngModel)]="template.title" />
+      </mat-form-field>
+      <mat-form-field class="example-full-width">
+        <mat-label>slug</mat-label>
+        <input matInput placeholder="Base URL" [(ngModel)]="template.slug" readonly />
+      </mat-form-field>
+
+      <h2>Variables</h2>
+      <div class="vars">
+        <div class="var-item intro-component-animation" *ngFor="let varItem of template.vars" fxLayout="row wrap" fxLayoutGap="16px grid">
+          <mat-form-field fxFlex>
+            <mat-label>ID (solo minusculas)</mat-label>
+            <input matInput placeholder="ID" [(ngModel)]="varItem.id" style="text-transform: lowercase;" />
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <mat-label>Titulo</mat-label>
+            <input matInput placeholder="Titulo" [(ngModel)]="varItem.title" />
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <mat-label>Descripción</mat-label>
+            <input matInput placeholder="Descripción" [(ngModel)]="varItem.caption" />
+          </mat-form-field>
+          <mat-form-field fxFlex>
+            <mat-label>Testing</mat-label>
+            <input matInput placeholder="Ejemplo para preview" [(ngModel)]="varItem.testing" />
+          </mat-form-field>
+          <button mat-icon-button color="error" class="button-delete" matTooltip="Borrar variable" (click)="deleteVar()"><mat-icon>close</mat-icon></button>
+        </div>
+  
+        <button mat-raised-button (click)="addVar()">Agregar variable</button>
+      </div>
+
+      <h2>Send Preview</h2>
+      <mat-form-field class="example-full-width">
+        <mat-label>Email for test</mat-label>
+        <input matInput placeholder="Email for test" [(ngModel)]="previewEmail" />
+      </mat-form-field>
+
+      <button mat-raised-button (click)="sendTest()">Send</button>
+    </div>
+  
+    <div fxFlex class="content box">
+      <button *ngIf="typeShow == 1 || typeShow == 2" mat-raised-button color="primary" (click)="typeShow = 0"style="margin-right: 16px;">Ver Codigo</button>
+      <button *ngIf="typeShow == 0 || typeShow == 2" mat-raised-button color="primary" (click)="typeShow = 1">Ver Preview</button>
+      <button *ngIf="typeShow == 0 || typeShow == 1" mat-raised-button color="primary" (click)="typeShow = 2" style="margin-left: 16px;">Ver Plain Text</button>
+  
+      <div *ngIf="typeShow == 0" class="content-code intro-component-animation">
+        <mat-form-field style="width: 100%;">
+          <textarea matInput [(ngModel)]="template.content"></textarea>
+        </mat-form-field>
+      </div>
+      <div *ngIf="typeShow == 1" class="content-preview intro-component-animation">
+        <iframe [srcdoc]="getSanitizierHtml()"></iframe>
+      </div>
+      <div *ngIf="typeShow == 2" class="content-code intro-component-animation">
+        <mat-form-field style="width: 100%;">
+          <textarea matInput [(ngModel)]="template.content_text"></textarea>
+        </mat-form-field>
+      </div>
+  
+    </div>
+  </div>
+
+</div>

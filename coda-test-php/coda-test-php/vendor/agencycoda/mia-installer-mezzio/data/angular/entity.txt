@@ -1,0 +1,5 @@
+import { MiaModel } from "@agencycoda/mia-core";
+
+export class %%nameClass%% extends MiaModel {
+%%properties%%
+}

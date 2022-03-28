@@ -1,0 +1,29 @@
+<?php
+
+namespace App\Model;
+
+/**
+ * Description of Model
+%%properties%%
+ *
+ * @OA\Schema()
+%%swagger%%
+ *
+ * @author matiascamiletti
+ */
+class %%nameClass%% extends \Illuminate\Database\Eloquent\Model
+{
+    protected $table = '%%name%%';
+    
+    //protected $casts = ['data' => 'array'];
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    %%has_timestamp%%
+
+    %%relations%%
+
+    %%deleted%%
+}
